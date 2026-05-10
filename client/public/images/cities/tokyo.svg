@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-label="Tokyo city">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1D3557"/>
+      <stop offset="1" stop-color="#E63946"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="720" fill="url(#bg)"/>
+  <circle cx="945" cy="150" r="92" fill="#FFE8A3"/>
+  <path d="M0 530h1200v190H0z" fill="#111827"/>
+  <path d="M520 190l70 0 18 340H502z" fill="#F8FAFC"/>
+  <path d="M494 300h122M484 390h142M468 500h174" stroke="#F97316" stroke-width="16"/>
+  <path d="M220 405h92v125h-92zM350 340h120v190H350zM720 370h110v160H720zM880 315h145v215H880z" fill="#CBD5E1"/>
+  <text x="72" y="120" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="70" font-weight="700">Tokyo</text>
+</svg>

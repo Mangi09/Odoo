@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-label="Travel destination">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2F80ED"/>
+      <stop offset="1" stop-color="#F97316"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="720" fill="url(#sky)"/>
+  <circle cx="950" cy="130" r="74" fill="#FFE7B8"/>
+  <path d="M0 510c160-130 276-126 420 0s272 126 430 8 262-108 350 8v194H0z" fill="#123B5D" opacity=".78"/>
+  <path d="M0 575c180-74 325-76 488 0s310 74 466-4 213-64 246-40v189H0z" fill="#E8F4F8"/>
+  <path d="M230 510h740v150H230z" fill="#213547" opacity=".78"/>
+  <path d="M330 430h120v230H330zM520 360h140v300H520zM740 460h130v200H740z" fill="#FFFFFF" opacity=".88"/>
+  <text x="70" y="120" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="64" font-weight="700">Traveloop</text>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-label="Swiss Alps">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0284C7"/>
+      <stop offset="1" stop-color="#BBF7D0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="720" fill="url(#bg)"/>
+  <circle cx="960" cy="130" r="80" fill="#FEF9C3"/>
+  <path d="M70 620 405 185l335 435z" fill="#1E3A8A"/>
+  <path d="M395 620 720 250l350 370z" fill="#334155"/>
+  <path d="M405 185 520 335 360 300zM720 250l120 128-164-32z" fill="#F8FAFC"/>
+  <path d="M0 610c300-70 585-70 1200 0v110H0z" fill="#DCFCE7"/>
+  <text x="72" y="120" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="70" font-weight="700">Swiss Alps</text>
+</svg>

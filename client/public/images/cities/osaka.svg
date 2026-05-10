@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-label="Osaka city">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2563EB"/>
+      <stop offset="1" stop-color="#14B8A6"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="720" fill="url(#bg)"/>
+  <path d="M0 530h1200v190H0z" fill="#0F172A"/>
+  <path d="M448 240h304v300H448z" fill="#F8FAFC"/>
+  <path d="M398 315h404v50H398zM368 415h464v54H368z" fill="#1E3A8A"/>
+  <path d="M508 175h184v65H508z" fill="#FBBF24"/>
+  <circle cx="928" cy="145" r="82" fill="#FEF3C7"/>
+  <text x="72" y="120" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="70" font-weight="700">Osaka</text>
+</svg>

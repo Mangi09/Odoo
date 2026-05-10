@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-label="Japan">
+  <rect width="1200" height="720" fill="#F8FAFC"/>
+  <circle cx="600" cy="360" r="170" fill="#DC2626"/>
+  <path d="M0 560c220-95 415-95 610 0s360 85 590 12v148H0z" fill="#1D4ED8" opacity=".82"/>
+  <text x="72" y="120" fill="#111827" font-family="Arial, sans-serif" font-size="70" font-weight="700">Japan</text>
+</svg>

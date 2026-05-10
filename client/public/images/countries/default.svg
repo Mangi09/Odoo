@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-label="Country destination">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0F172A"/>
+      <stop offset="1" stop-color="#22C55E"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="720" fill="url(#bg)"/>
+  <circle cx="595" cy="345" r="185" fill="#F8FAFC" opacity=".9"/>
+  <path d="M420 310c90-120 260-120 350 0-46 62-84 128-104 220H525c-20-92-58-158-105-220z" fill="#22C55E"/>
+  <path d="M0 585c250-74 440-74 640 0s360 70 560 0v135H0z" fill="#F8FAFC" opacity=".76"/>
+  <text x="72" y="120" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="70" font-weight="700">Explore</text>
+</svg>
