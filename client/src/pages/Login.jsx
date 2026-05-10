@@ -1,6 +1,39 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { apiRequest, setStoredUser } from '../lib/api'
 
 const Login = () => {
+  const navigate = useNavigate()
+  const [form, setForm] = useState({
+    email: 'aarav@example.com',
+    password: 'password123',
+  })
+  const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+
+  const updateForm = (field, value) => {
+    setForm((current) => ({ ...current, [field]: value }))
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    setError('')
+    setIsLoading(true)
+
+    try {
+      const data = await apiRequest('/auth/login', {
+        method: 'POST',
+        body: JSON.stringify(form),
+      })
+      setStoredUser(data.user)
+      navigate('/dashboard')
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return (
     <main className="min-h-screen w-full flex flex-col md:flex-row">
 
@@ -31,15 +64,19 @@ const Login = () => {
           </div>
 
           {/* Username */}
+          <form onSubmit={handleSubmit}>
           <div className="mb-5">
             <label className="block mb-2 text-sm font-medium text-gray-700">
-              Username
+              Email
             </label>
 
             <input
-              type="text"
-              placeholder="Enter your username"
+              type="email"
+              value={form.email}
+              onChange={(event) => updateForm('email', event.target.value)}
+              placeholder="Enter your email"
               className="w-full px-4 py-4 border border-gray-300 rounded-xl bg-gray-50 focus:bg-white focus:ring-2 focus:ring-black outline-none transition"
+              required
             />
           </div>
 
@@ -51,10 +88,19 @@ const Login = () => {
 
             <input
               type="password"
+              value={form.password}
+              onChange={(event) => updateForm('password', event.target.value)}
               placeholder="Enter your password"
               className="w-full px-4 py-4 border border-gray-300 rounded-xl bg-gray-50 focus:bg-white focus:ring-2 focus:ring-black outline-none transition"
+              required
             />
           </div>
+
+          {error && (
+            <p className="mb-4 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+              {error}
+            </p>
+          )}
 
           {/* Forgot Password */}
           <div className="flex justify-end mb-6">
@@ -64,9 +110,14 @@ const Login = () => {
           </div>
 
           {/* Login Button */}
-          <button className="w-full bg-primary text-white py-4 rounded-xl font-semibold text-lg hover:bg-gray-800 transition shadow-md">
-            Login
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-primary text-white py-4 rounded-xl font-semibold text-lg hover:bg-gray-800 transition shadow-md disabled:opacity-70"
+          >
+            {isLoading ? 'Logging in...' : 'Login'}
           </button>
+          </form>
 
           {/* Divider */}
           <div className="flex items-center my-8">
@@ -78,9 +129,9 @@ const Login = () => {
           {/* Register Link */}
           <p className="text-center text-gray-600">
             Don&apos;t have an account?{" "}
-            <span className="font-semibold text-primary cursor-pointer hover:underline">
+            <Link to="/register" className="font-semibold text-primary cursor-pointer hover:underline">
               Register
-            </span>
+            </Link>
           </p>
 
         </div>

@@ -1,12 +1,54 @@
 import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { apiRequest, setStoredUser } from '../lib/api'
 
 const Register = () => {
+  const navigate = useNavigate()
   const [avatar, setAvatar] = useState(null)
+  const [form, setForm] = useState({
+    firstName: '',
+    lastName: '',
+    username: '',
+    email: '',
+    password: '',
+    phoneNumber: '',
+    city: '',
+    country: '',
+    additionalInfo: '',
+  })
+  const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0]
     if (file) {
       setAvatar(URL.createObjectURL(file))
+    }
+  }
+
+  const updateForm = (field, value) => {
+    setForm((current) => ({ ...current, [field]: value }))
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    setError('')
+    setIsLoading(true)
+
+    try {
+      const data = await apiRequest('/auth/signup', {
+        method: 'POST',
+        body: JSON.stringify({
+          ...form,
+          fullName: [form.firstName, form.lastName].filter(Boolean).join(' '),
+        }),
+      })
+      setStoredUser(data.user)
+      navigate('/dashboard')
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -16,7 +58,7 @@ const Register = () => {
       {/* LEFT - FORM */}
       <div className="flex justify-center bg-white p-8 md:p-14 overflow-y-auto">
 
-        <div className="w-full max-w-2xl">
+        <form className="w-full max-w-2xl" onSubmit={handleSubmit}>
 
           {/* Heading */}
           <div className="mb-8">
@@ -63,14 +105,19 @@ const Register = () => {
             <div>
              <input
                 type="text"
+                value={form.firstName}
+                onChange={(event) => updateForm('firstName', event.target.value)}
                 placeholder="First Name"
                 className="w-full p-4 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-primary"
+                required
               />
             </div>
 
             <div>
               <input
                 type="text"
+                value={form.lastName}
+                onChange={(event) => updateForm('lastName', event.target.value)}
                 placeholder="Last Name"
                 className="w-full p-4 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-primary"
               />
@@ -83,14 +130,19 @@ const Register = () => {
             <div>
               <input
                 type="email"
+                value={form.email}
+                onChange={(event) => updateForm('email', event.target.value)}
                 placeholder="Email"
                 className="w-full p-4 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-primary"
+                required
               />
             </div>
 
             <div>
              <input
                 type="tel"
+                value={form.phoneNumber}
+                onChange={(event) => updateForm('phoneNumber', event.target.value)}
                 placeholder="Phone Number"
                 className="w-full p-4 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-primary"
               />
@@ -103,6 +155,8 @@ const Register = () => {
             <div>
               <input
                 type="text"
+                value={form.city}
+                onChange={(event) => updateForm('city', event.target.value)}
                 placeholder="City"
                 className="w-full p-4 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-primary"
               />
@@ -111,6 +165,8 @@ const Register = () => {
             <div>
               <input
                 type="text"
+                value={form.country}
+                onChange={(event) => updateForm('country', event.target.value)}
                 placeholder="Country"
                 className="w-full p-4 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-primary"
               />
@@ -120,6 +176,8 @@ const Register = () => {
           {/* Additional Info */}
           <div className="mb-6">
            <textarea
+              value={form.additionalInfo}
+              onChange={(event) => updateForm('additionalInfo', event.target.value)}
               placeholder="Tell us something about you..."
               rows="4"
               className="w-full p-4 border border-gray-300 rounded-xl outline-none resize-none focus:ring-2 focus:ring-primary"
@@ -127,11 +185,49 @@ const Register = () => {
           </div>
 
           {/* Button */}
-          <button className="w-full bg-primary text-white py-4 rounded-xl text-lg font-semibold hover:opacity-90 transition">
-            Create Account
+          <div className="mb-5">
+            <input
+              type="text"
+              value={form.username}
+              onChange={(event) => updateForm('username', event.target.value)}
+              placeholder="Username"
+              className="w-full p-4 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-primary"
+            />
+          </div>
+
+          <div className="mb-6">
+            <input
+              type="password"
+              value={form.password}
+              onChange={(event) => updateForm('password', event.target.value)}
+              placeholder="Password"
+              className="w-full p-4 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-primary"
+              required
+            />
+          </div>
+
+          {error && (
+            <p className="mb-4 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+              {error}
+            </p>
+          )}
+
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-primary text-white py-4 rounded-xl text-lg font-semibold hover:opacity-90 transition disabled:opacity-70"
+          >
+            {isLoading ? 'Creating account...' : 'Create Account'}
           </button>
 
-        </div>
+          <p className="mt-6 text-center text-gray-600">
+            Already registered?{' '}
+            <Link to="/login" className="font-semibold text-primary hover:underline">
+              Login
+            </Link>
+          </p>
+
+        </form>
       </div>
 
       {/* RIGHT - IMAGE */}

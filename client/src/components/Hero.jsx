@@ -1,4 +1,8 @@
+import { useNavigate } from 'react-router-dom'
+
 export default function Hero() {
+  const navigate = useNavigate()
+
   return (
     <section className="px-6 lg:px-12 py-10 lg:py-20">
 
@@ -31,15 +35,23 @@ export default function Hero() {
 
           <div className="flex gap-5 mt-10 flex-wrap">
 
-            <button className="bg-[#F97316] text-white px-8 py-4 rounded-2xl font-medium hover:scale-105 transition">
+            <button
+              type="button"
+              onClick={() => navigate('/register')}
+              className="bg-[#F97316] text-white px-8 py-4 rounded-2xl font-medium hover:scale-105 transition"
+            >
 
               Start Planning
 
             </button>
 
-            <button className="bg-white border border-[#E5E5E5] px-8 py-4 rounded-2xl font-medium hover:shadow-md transition">
+            <button
+              type="button"
+              onClick={() => navigate('/login')}
+              className="bg-white border border-[#E5E5E5] px-8 py-4 rounded-2xl font-medium hover:shadow-md transition"
+            >
 
-              Watch Demo
+              Login
 
             </button>
 
