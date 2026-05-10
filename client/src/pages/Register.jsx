@@ -14,7 +14,7 @@ const Register = () => {
     <main className="w-full min-h-screen grid grid-cols-1 lg:grid-cols-2">
 
       {/* LEFT - FORM */}
-      <div className="flex items-center justify-center bg-white p-8 md:p-14">
+      <div className="flex justify-center bg-white p-8 md:p-14 overflow-y-auto">
 
         <div className="w-full max-w-2xl">
 
@@ -135,7 +135,7 @@ const Register = () => {
       </div>
 
       {/* RIGHT - IMAGE */}
-      <div className="hidden lg:block fixed right-0 top-0 w-1/2 h-screen">
+      <div className="hidden h-full lg:block overflow-hidden">
         <img
           src="https://images.unsplash.com/photo-1488646953014-85cb44e25828"
           alt="Travel"

@@ -1,5 +1,23 @@
 @import "tailwindcss";
-
 body {
   font-family: 'Poppins', sans-serif;
+}
+
+@theme {
+  --color-primary: #F27932;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeUp {
+  animation: fadeUp 0.5s ease-out both;
 }
