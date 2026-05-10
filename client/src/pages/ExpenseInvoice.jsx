@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import logo from '../assets/logo.png'
 import { useEffect, useMemo, useState } from 'react'
-import { apiFetch } from '../lib/api'
+import { apiFetch, API_BASE_URL } from '../lib/api'
 import { getCurrentUserId } from '../lib/session'
 
 function Money({ value }) {
@@ -77,6 +77,52 @@ export default function ExpenseInvoice() {
     return () => { mounted = false }
   }, [userId])
 
+  async function downloadInvoice() {
+    if (!invoice?.id) {
+      // fallback to client-side print if no server invoice id
+      return exportAsPdfFallback()
+    }
+
+    try {
+      const resp = await fetch(`${API_BASE_URL}/invoices/${invoice.id}/pdf`, {
+        method: 'GET',
+        headers: { Accept: 'application/pdf' }
+      })
+
+      if (!resp.ok) throw new Error('PDF download failed')
+
+      const blob = await resp.blob()
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `${invoice.id || 'invoice'}.pdf`
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+      URL.revokeObjectURL(url)
+    } catch {
+      // server not available or returned error — fallback
+      exportAsPdfFallback()
+    }
+  }
+
+  async function exportAsPdfFallback() {
+    // Simple client-side fallback: open printable window and call print
+    const node = document.getElementById('invoice-root')
+    if (!node) return
+    const html = `<!doctype html><html><head><title>Invoice</title><meta name="viewport" content="width=device-width,initial-scale=1"/><style>body{font-family: Sora, sans-serif;padding:20px;color:var(--text);background:#fff}</style></head><body>${node.outerHTML}</body></html>`
+    const w = window.open('', '_blank')
+    if (!w) return
+    w.document.open()
+    w.document.write(html)
+    w.document.close()
+    // give the window a moment to render
+    setTimeout(() => {
+      w.print()
+      w.close()
+    }, 300)
+  }
+
   const data = useMemo(() => {
     if (!invoice) {
       return {
@@ -120,7 +166,7 @@ export default function ExpenseInvoice() {
       <main className="tl-board tl-board-large">
         <Navbar />
 
-        <div className="tl-section tl-invoice-shell">
+        <div id="invoice-root" className="tl-section tl-invoice-shell">
           <div className="tl-invoice-left">
             <div className="tl-invoice-head">
               <div className="tl-invoice-brand">
@@ -186,8 +232,8 @@ export default function ExpenseInvoice() {
             </div>
 
             <div className="tl-invoice-actions">
-              <button className="tl-btn">Download Invoice</button>
-              <button className="tl-btn">Export as PDF</button>
+              <button className="tl-btn" onClick={downloadInvoice}>Download Invoice</button>
+              <button className="tl-btn" onClick={exportAsPdfFallback}>Export as PDF</button>
               <button className="tl-btn tl-btn-primary">Mark as paid</button>
             </div>
           </div>
