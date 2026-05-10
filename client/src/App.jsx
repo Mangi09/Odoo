@@ -1,19 +1,26 @@
+import { useState } from 'react'
 import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import Features from "./components/Features";
-import CTA from "./components/CTA";
 import Footer from "./components/Footer";
-import CreateTrip from "./components/CreateTrip";
+import { Route, Routes } from 'react-router-dom'
+import Register from './pages/Register'
+import Login from './pages/Login'
+import Home from './pages/Home';
 
-export default function App() {
+
+function App() {
+  const [count, setCount] = useState(0)
+
   return (
-    <div className="bg-[#F5F3F2] overflow-x-hidden">
-      <Navbar />
-      <Hero />
-      <Features />
-      <CreateTrip />
-      <CTA />
-      <Footer />
-    </div>
-  );
+    <>
+        <Navbar />
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/register' element={<Register />} />
+          <Route path='/login' element={<Login />} />
+        </Routes>
+        <Footer />
+    </>
+  )
 }
+
+export default App
