@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 
 import MainLayout from "./layouts/MainLayout";
 import AdminLayout from "./layouts/AdminLayout";
+import AdminPanel from "./pages/AdminPanel";
 
 function App() {
   return (
@@ -20,7 +21,7 @@ function App() {
 
       {/* Admin Layout */}
       <Route element={<AdminLayout />}>
-
+        <Route path="/admin-panel" element={<AdminPanel />} />
       </Route>
 
     </Routes>
