@@ -2,3 +2,10 @@ node_modules/
 dist/
 .env
 *.log
+
+# Large downloaded/import data should stay local.
+data/raw/
+data/processed/
+
+# Large imported image caches should stay local. Small curated demo images can be committed.
+client/public/images/imported/
