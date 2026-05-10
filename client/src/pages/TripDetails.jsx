@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import Navbar from '../components/Navbar'
 import { apiFetch } from '../lib/api'
 
 export default function TripDetails() {
@@ -43,8 +42,6 @@ export default function TripDetails() {
   return (
     <div className="tl-page">
       <main className="tl-board tl-board-large">
-        <Navbar />
-
         <section className="tl-section">
           <div className="tl-inline-actions tl-page-actions">
             <Link className="tl-pill" to="/trips">Back to trips</Link>

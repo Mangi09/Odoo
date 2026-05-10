@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import Navbar from '../components/Navbar'
 import { apiFetch } from '../lib/api'
 import { getCurrentUserId } from '../lib/session'
 
@@ -75,8 +74,6 @@ export default function Trips() {
   return (
     <div className="tl-page">
       <main className="tl-board tl-board-large">
-        <Navbar />
-
         <section className="tl-section">
           <div className="tl-inline-actions tl-page-actions">
             <Link className="tl-pill" to="/plan">Plan new trip</Link>

@@ -791,4 +791,59 @@ router.post('/:tripId/notes', asyncHandler(async (req, res) => {
   res.status(201).json({ note: result.rows[0] });
 }));
 
+router.patch('/:tripId/notes/:noteId', asyncHandler(async (req, res) => {
+  await requireTrip(req.params.tripId);
+
+  const result = await query(
+    `
+      UPDATE trip_notes
+      SET
+        stop_id = COALESCE($3, stop_id),
+        note_date = COALESCE($4, note_date),
+        title = COALESCE($5, title),
+        body = COALESCE($6, body)
+      WHERE trip_id = $1 AND id = $2
+      RETURNING
+        id,
+        trip_id AS "tripId",
+        stop_id AS "stopId",
+        created_by AS "createdBy",
+        note_date AS "noteDate",
+        title,
+        body,
+        created_at AS "createdAt",
+        updated_at AS "updatedAt"
+    `,
+    [
+      req.params.tripId,
+      req.params.noteId,
+      optionalString(req.body.stopId),
+      optionalString(req.body.noteDate),
+      optionalString(req.body.title),
+      optionalString(req.body.body)
+    ]
+  );
+
+  if (!result.rows[0]) {
+    throw createHttpError(404, 'Trip note not found');
+  }
+
+  res.json({ note: result.rows[0] });
+}));
+
+router.delete('/:tripId/notes/:noteId', asyncHandler(async (req, res) => {
+  await requireTrip(req.params.tripId);
+
+  const result = await query(
+    'DELETE FROM trip_notes WHERE trip_id = $1 AND id = $2 RETURNING id',
+    [req.params.tripId, req.params.noteId]
+  );
+
+  if (!result.rows[0]) {
+    throw createHttpError(404, 'Trip note not found');
+  }
+
+  res.status(204).send();
+}));
+
 module.exports = router;

@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react'
-import Navbar from '../components/Navbar'
 import { apiFetch } from '../lib/api'
 import { getCurrentUserId } from '../lib/session'
 
@@ -308,8 +307,6 @@ export default function PackingChecklist() {
   return (
     <div className="tl-page tl-checklist-page">
       <main className="tl-board-large tl-checklist-shell">
-        <Navbar />
-
         <section className="tl-checklist-hero tl-fade-card">
           <div>
             <p className="tl-kicker">Packing Checklist</p>

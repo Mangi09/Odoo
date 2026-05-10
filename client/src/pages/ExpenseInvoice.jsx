@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import Navbar from '../components/Navbar'
 import logo from '../assets/logo.png'
 import { useEffect, useMemo, useState } from 'react'
 import { apiFetch, API_BASE_URL } from '../lib/api'
@@ -43,32 +42,46 @@ function PieChart({ parts = [] , size = 120}){
 
 export default function ExpenseInvoice() {
   const [invoice, setInvoice] = useState(null)
+  const [trips, setTrips] = useState([])
+  const [selectedTripId, setSelectedTripId] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [paymentStatus, setPaymentStatus] = useState('Pending')
   const userId = getCurrentUserId()
 
   useEffect(() => {
     let mounted = true
     async function load() {
       try {
-        // try server endpoint for invoices by user
-        const invoices = await apiFetch(`/invoices?userId=${userId}`)
-        // choose first invoice as demo; adapt later to route param
-        if (mounted && Array.isArray(invoices) && invoices.length) {
-          setInvoice(invoices[0])
+        // Load both trips and invoices
+        const [tripsResponse, invoicesResponse] = await Promise.all([
+          apiFetch(`/trips?userId=${userId}`),
+          apiFetch(`/invoices?userId=${userId}`)
+        ])
+
+        const tripsData = Array.isArray(tripsResponse) ? tripsResponse : tripsResponse?.trips || []
+        const invoicesList = Array.isArray(invoicesResponse) ? invoicesResponse : invoicesResponse?.invoices || invoicesResponse || []
+
+        if (!mounted) return
+
+        setTrips(tripsData)
+
+        // auto-select first trip with expenses (use invoices to determine), fallback to first trip
+        const tripWithExpenses = invoicesList.find((inv) => Number(inv.total || 0) > 0 || Number(inv.subtotal || 0) > 0)
+        const selectedId = tripWithExpenses?.id || tripsData[0]?.id
+        if (selectedId) {
+          setSelectedTripId(selectedId)
+
+          // set the invoice for this trip
+          if (mounted && Array.isArray(invoicesList)) {
+            const matchingInvoice = invoicesList.find((inv) => inv.id === selectedId)
+            if (matchingInvoice) {
+              setInvoice(matchingInvoice)
+              setPaymentStatus(matchingInvoice.status || 'Pending')
+            }
+          }
         }
       } catch {
-        // fallback: try trips -> invoice or leave as null
-        try {
-          const trips = await apiFetch(`/trips?userId=${userId}`)
-          if (mounted && Array.isArray(trips) && trips.length) {
-            const trip = trips[0]
-            // attempt a trip-specific invoice endpoint
-            try {
-              const inv = await apiFetch(`/trips/${trip.id}/invoice`)
-              if (inv) setInvoice(inv)
-            } catch { /* ignore */ }
-          }
-        } catch { /* ignore */ }
+        // ignore
       } finally {
         if (mounted) setLoading(false)
       }
@@ -76,6 +89,28 @@ export default function ExpenseInvoice() {
     load()
     return () => { mounted = false }
   }, [userId])
+
+  useEffect(() => {
+    if (!selectedTripId) return
+    let mounted = true
+    async function loadInvoiceForTrip() {
+      try {
+        const response = await apiFetch(`/invoices?userId=${userId}`)
+        const invoicesList = Array.isArray(response) ? response : response?.invoices || response || []
+        if (mounted && Array.isArray(invoicesList)) {
+          const matchingInvoice = invoicesList.find((inv) => inv.id === selectedTripId)
+          if (matchingInvoice) {
+            setInvoice(matchingInvoice)
+            setPaymentStatus(matchingInvoice.status || 'Pending')
+          }
+        }
+      } catch {
+        // ignore
+      }
+    }
+    loadInvoiceForTrip()
+    return () => { mounted = false }
+  }, [selectedTripId, userId])
 
   async function downloadInvoice() {
     if (!invoice?.id) {
@@ -123,6 +158,18 @@ export default function ExpenseInvoice() {
     }, 300)
   }
 
+  async function markAsPaid() {
+    try {
+      await apiFetch(`/invoices/${invoice?.id || 'local-demo'}/paid`, {
+        method: 'POST',
+        body: JSON.stringify({ status: 'paid' })
+      })
+      setPaymentStatus('Paid')
+    } catch {
+      setPaymentStatus('Paid')
+    }
+  }
+
   const data = useMemo(() => {
     if (!invoice) {
       return {
@@ -164,8 +211,21 @@ export default function ExpenseInvoice() {
   return (
     <div className="tl-page">
       <main className="tl-board tl-board-large">
-        <Navbar />
-
+        {trips.length > 1 && (
+          <div className="tl-invoice-selector">
+            <label htmlFor="trip-select" style={{ fontWeight: 600, color: 'var(--text)' }}>Select Trip:</label>
+            <select
+              id="trip-select"
+              value={selectedTripId || ''}
+              onChange={(e) => setSelectedTripId(e.target.value)}
+            >
+              <option value="">-- Choose a trip --</option>
+              {trips.map((trip) => (
+                <option key={trip.id} value={trip.id}>{trip.title || trip.name || 'Untitled Trip'}</option>
+              ))}
+            </select>
+          </div>
+        )}
         <div id="invoice-root" className="tl-section tl-invoice-shell">
           <div className="tl-invoice-left">
             <div className="tl-invoice-head">
@@ -182,7 +242,7 @@ export default function ExpenseInvoice() {
                 <ul className="tl-inline-list">
                   {data.travelers?.map((t) => <li key={t}>{t}</li>)}
                 </ul>
-                <p className="tl-muted">Payment status - <strong>{invoice?.status || 'Pending'}</strong></p>
+                <p className="tl-muted">Payment status - <strong>{invoice?.status || paymentStatus}</strong></p>
               </div>
             </div>
 
@@ -204,7 +264,7 @@ export default function ExpenseInvoice() {
                   </thead>
                   <tbody>
                     {data.items.length ? data.items.map((row, idx) => (
-                      <tr key={row.id || idx}>
+                      <tr key={`${row.id}-${row.description}-${idx}`}>
                         <td>{idx + 1}</td>
                         <td>{row.category || row.type || '-'}</td>
                         <td>{row.description || row.name || '-'}</td>
@@ -234,14 +294,14 @@ export default function ExpenseInvoice() {
             <div className="tl-invoice-actions">
               <button className="tl-btn" onClick={downloadInvoice}>Download Invoice</button>
               <button className="tl-btn" onClick={exportAsPdfFallback}>Export as PDF</button>
-              <button className="tl-btn tl-btn-primary">Mark as paid</button>
+              <button className="tl-btn tl-btn-primary" onClick={markAsPaid}>Mark as paid</button>
             </div>
           </div>
 
           <aside className="tl-invoice-right">
             <div className="tl-panel">
               <h3 className="tl-subtitle">Budget Insights</h3>
-              <div style={{display:'grid',gridTemplateColumns:'auto 1fr',gap:12,alignItems:'center'}}>
+              <div className="tl-budget-insights-grid">
                 <PieChart parts={budgetParts} />
                 <div>
                   <p className="tl-muted">Total Budget: <strong>{invoice?.budget ?? '—'}</strong></p>

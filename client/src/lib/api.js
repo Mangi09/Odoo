@@ -44,3 +44,6 @@ export function clearStoredUser() {
 export function getActiveUserId() {
   return getStoredUser()?.id || DEMO_USER_ID
 }
+
+// Backwards-compatible alias: some pages import `apiFetch`
+export const apiFetch = apiRequest

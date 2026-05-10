@@ -1,4 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
+import logo from '../assets/logo.png'
 import { clearStoredUser, getStoredUser } from '../lib/api'
 
 export default function Navbar() {
@@ -11,22 +12,25 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="w-full px-6 lg:px-12 py-6 flex items-center justify-between max-w-7xl mx-auto z-50">
-
-      <Link to="/" className="text-3xl font-bold text-[#2D2D2D]">
-        Traveloop
+    <nav className="tl-bar tl-navbar">
+      <Link className="tl-brand-wrap tl-brand-link" to="/" aria-label="Traveloop home">
+        <img src={logo} alt="Traveloop" className="tl-logo" />
+        <div className="tl-brand">Traveloop</div>
       </Link>
 
-      <div className="hidden md:flex items-center gap-10 text-[#555] font-medium">
-
+      <div className="hidden md:flex items-center gap-6 text-[#555] font-medium tl-navbar-links">
         <Link to="/dashboard">Dashboard</Link>
         <Link to="/create-trip">Plan Trip</Link>
         <Link to="/my-trips">My Trips</Link>
         <Link to="/itinerary-builder">Itinerary</Link>
-
+        <Link to="/trips">Trips</Link>
+        <Link to="/packing-checklist">Checklist</Link>
+        <Link to="/expense-invoice">Invoice</Link>
+        <Link to="/community">Community</Link>
+        <Link to="/tips">Tips</Link>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 tl-navbar-actions">
         {user ? (
           <>
             <button
