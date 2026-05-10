@@ -1,15 +1,21 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Home from './pages/Home'
+import PlanTrip from './pages/PlanTrip'
+import Profile from './pages/Profile'
+import Trips from './pages/Trips'
+import TripDetails from './pages/TripDetails'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <h1>Traveloop</h1>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/plan" element={<PlanTrip />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/trips" element={<Trips />} />
+        <Route path="/trips/:tripId" element={<TripDetails />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
