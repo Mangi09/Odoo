@@ -1,8 +1,8 @@
-const { loadEnvFile } = require('../src/config/env');
+const { loadEnvFile } = require("../src/config/env");
 
 loadEnvFile();
 
-const { pool } = require('../src/db/pool');
+const { pool } = require("../src/db/pool");
 
 const apiKey = process.env.OPENTRIPMAP_API_KEY;
 const cityLimit = Number(process.env.OTM_CITY_LIMIT || 25);
@@ -13,18 +13,30 @@ const cityDelayMs = Number(process.env.OTM_CITY_DELAY_MS || 2500);
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const categoryFromKinds = (kinds = '') => {
+const categoryFromKinds = (kinds = "") => {
   const value = kinds.toLowerCase();
 
-  if (value.includes('foods') || value.includes('restaurants')) return 'food';
-  if (value.includes('museums') || value.includes('theatres') || value.includes('cultural')) return 'culture';
-  if (value.includes('natural') || value.includes('beaches') || value.includes('parks')) return 'nature';
-  if (value.includes('sport') || value.includes('amusements')) return 'adventure';
-  if (value.includes('shops')) return 'shopping';
-  if (value.includes('nightclubs')) return 'nightlife';
-  if (value.includes('historic') || value.includes('architecture')) return 'sightseeing';
+  if (value.includes("foods") || value.includes("restaurants")) return "food";
+  if (
+    value.includes("museums") ||
+    value.includes("theatres") ||
+    value.includes("cultural")
+  )
+    return "culture";
+  if (
+    value.includes("natural") ||
+    value.includes("beaches") ||
+    value.includes("parks")
+  )
+    return "nature";
+  if (value.includes("sport") || value.includes("amusements"))
+    return "adventure";
+  if (value.includes("shops")) return "shopping";
+  if (value.includes("nightclubs")) return "nightlife";
+  if (value.includes("historic") || value.includes("architecture"))
+    return "sightseeing";
 
-  return 'other';
+  return "other";
 };
 
 const apiGet = async (path) => {
@@ -37,14 +49,18 @@ const apiGet = async (path) => {
     const retryResponse = await fetch(url);
 
     if (!retryResponse.ok) {
-      throw new Error(`OpenTripMap request failed: ${retryResponse.status} ${retryResponse.statusText}`);
+      throw new Error(
+        `OpenTripMap request failed: ${retryResponse.status} ${retryResponse.statusText}`,
+      );
     }
 
     return retryResponse.json();
   }
 
   if (!response.ok) {
-    throw new Error(`OpenTripMap request failed: ${response.status} ${response.statusText}`);
+    throw new Error(
+      `OpenTripMap request failed: ${response.status} ${response.statusText}`,
+    );
   }
 
   return response.json();
@@ -52,7 +68,7 @@ const apiGet = async (path) => {
 
 const importCityActivities = async (city) => {
   const places = await apiGet(
-    `radius?radius=${radiusMeters}&lon=${city.longitude}&lat=${city.latitude}&rate=2&limit=${placesPerCity}&format=json`
+    `radius?radius=${radiusMeters}&lon=${city.longitude}&lat=${city.latitude}&rate=2&limit=${placesPerCity}&format=json`,
   );
 
   let imported = 0;
@@ -121,9 +137,9 @@ const importCityActivities = async (city) => {
         sourceUrl,
         place.point?.lat || null,
         place.point?.lon || null,
-        imageUrl ? 'OpenTripMap' : null,
-        sourceUrl
-      ]
+        imageUrl ? "OpenTripMap" : null,
+        sourceUrl,
+      ],
     );
 
     imported += 1;
@@ -134,7 +150,7 @@ const importCityActivities = async (city) => {
 
 const main = async () => {
   if (!apiKey) {
-    throw new Error('OPENTRIPMAP_API_KEY is missing in server/.env');
+    throw new Error("OPENTRIPMAP_API_KEY is missing in server/.env");
   }
 
   const result = await pool.query(
@@ -143,7 +159,7 @@ const main = async () => {
      WHERE latitude IS NOT NULL AND longitude IS NOT NULL
      ORDER BY popularity_score DESC, population DESC NULLS LAST, name ASC
      LIMIT $1`,
-    [cityLimit]
+    [cityLimit],
   );
 
   let total = 0;
