@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import Navbar from '../components/Navbar'
 import { apiFetch } from '../lib/api'
 import { getCurrentUserId } from '../lib/session'
 
@@ -101,14 +102,13 @@ export default function PlanTrip() {
   return (
     <div className="tl-page">
       <main className="tl-board tl-board-large">
-        <header className="tl-bar">
-          <div className="tl-brand">Traveloop</div>
-          <Link className="tl-profile" to="/profile" aria-label="Profile">
-            <span>U</span>
-          </Link>
-        </header>
+        <Navbar />
 
         <section className="tl-section">
+          <div className="tl-inline-actions tl-page-actions">
+            <Link className="tl-pill" to="/trips">Back to trips</Link>
+            <Link className="tl-pill" to="/">Home</Link>
+          </div>
           <h1 className="tl-title">Plan a new trip</h1>
           <form className="tl-form" onSubmit={handleSaveTrip}>
             <label>

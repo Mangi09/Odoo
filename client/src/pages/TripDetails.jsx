@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import Navbar from '../components/Navbar'
 import { apiFetch } from '../lib/api'
 
 export default function TripDetails() {
@@ -42,10 +43,13 @@ export default function TripDetails() {
   return (
     <div className="tl-page">
       <main className="tl-board tl-board-large">
-        <header className="tl-bar">
-          <div className="tl-brand">Traveloop</div>
-          <Link className="tl-pill" to="/trips">Back to trips</Link>
-        </header>
+        <Navbar />
+
+        <section className="tl-section">
+          <div className="tl-inline-actions tl-page-actions">
+            <Link className="tl-pill" to="/trips">Back to trips</Link>
+          </div>
+        </section>
 
         {isLoading ? <p className="tl-muted">Loading itinerary...</p> : null}
         {errorMessage ? <p className="tl-error">{errorMessage}</p> : null}

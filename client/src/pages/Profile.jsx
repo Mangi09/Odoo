@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import Navbar from '../components/Navbar'
 import { apiFetch } from '../lib/api'
 import { getCurrentUserId } from '../lib/session'
 
@@ -76,12 +77,12 @@ export default function Profile() {
   return (
     <div className="tl-page">
       <main className="tl-board tl-board-large">
-        <header className="tl-bar">
-          <div className="tl-brand">Traveloop</div>
-          <Link className="tl-pill" to="/">Back to home</Link>
-        </header>
+        <Navbar />
 
         <section className="tl-section">
+          <div className="tl-inline-actions tl-page-actions">
+            <Link className="tl-pill" to="/">Back to home</Link>
+          </div>
           <h1 className="tl-title">User profile</h1>
           {isLoading ? <p className="tl-muted">Loading profile...</p> : null}
 

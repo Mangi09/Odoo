@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
-import logo from '../assets/logo.png'
+import Navbar from '../components/Navbar'
 import { apiFetch } from '../lib/api'
 import { getCurrentUserId } from '../lib/session'
 
@@ -309,19 +308,7 @@ export default function PackingChecklist() {
   return (
     <div className="tl-page tl-checklist-page">
       <main className="tl-board-large tl-checklist-shell">
-        <header className="tl-bar tl-checklist-bar">
-          <div className="tl-brand-wrap">
-            <img src={logo} alt="Traveloop logo" className="tl-logo" />
-            <div>
-              <div className="tl-brand">Traveloop</div>
-              <p className="tl-checklist-eyebrow">Screen 11</p>
-            </div>
-          </div>
-
-          <Link className="tl-profile" to="/profile" aria-label="User profile">
-            <span>U</span>
-          </Link>
-        </header>
+        <Navbar />
 
         <section className="tl-checklist-hero tl-fade-card">
           <div>

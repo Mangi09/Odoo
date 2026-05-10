@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import Navbar from '../components/Navbar'
 import bannerImg from '../assets/banner.png'
-import logo from '../assets/logo.png'
 import parisImg from '../assets/city_paris.png'
 import tokyoImg from '../assets/city_tokyo.png'
 import baliImg from '../assets/city_bali.png'
@@ -140,16 +140,7 @@ export default function Home() {
   return (
     <div className="tl-page">
       <main className="tl-board tl-home-board">
-        <header className="tl-bar tl-home-bar">
-          <div className="tl-brand-wrap">
-            <img src={logo} alt="Traveloop logo" className="tl-logo" />
-            <div className="tl-brand">Traveloop</div>
-          </div>
-
-          <Link className="tl-profile" to="/profile" aria-label="User profile">
-            <span>U</span>
-          </Link>
-        </header>
+        <Navbar />
 
         <div className="tl-home-content">
 
