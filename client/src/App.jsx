@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import MainLayout from "./layouts/MainLayout";
 import AdminLayout from "./layouts/AdminLayout";
 import AdminPanel from "./pages/AdminPanel";
+import Tips from "./pages/Tips";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path='/tips' element={<Tips />} />
       </Route>
 
       {/* Admin Layout */}
