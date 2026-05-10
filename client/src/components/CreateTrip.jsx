@@ -1,3 +1,5 @@
+import { getPlaceImage, handleImageError } from '../lib/images'
+
 const places = [
     {
         name: "Paris",
@@ -165,9 +167,10 @@ export default function CreateTrip() {
                         <div className="mt-8">
 
                             <img
-                                src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e"
+                                src={getPlaceImage({ name: 'Paris' })}
                                 alt=""
                                 className="w-full h-56 object-cover rounded-3xl"
+                                onError={handleImageError}
                             />
 
                             <div className="mt-6">
@@ -217,9 +220,10 @@ export default function CreateTrip() {
                             >
 
                                 <img
-                                    src={place.image}
+                                    src={getPlaceImage(place)}
                                     alt=""
                                     className="h-56 w-full object-cover"
+                                    onError={handleImageError}
                                 />
 
                                 <div className="p-6">

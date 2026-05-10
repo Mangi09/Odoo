@@ -41,7 +41,7 @@ VALUES
         96,
         35.676200,
         139.650300,
-        'https://example.com/tokyo.jpg'
+        '/images/cities/tokyo.svg'
     ),
     (
         '10000000-0000-0000-0000-000000000002',
@@ -52,7 +52,7 @@ VALUES
         91,
         35.011600,
         135.768100,
-        'https://example.com/kyoto.jpg'
+        '/images/cities/kyoto.svg'
     ),
     (
         '10000000-0000-0000-0000-000000000003',
@@ -63,7 +63,7 @@ VALUES
         88,
         34.693700,
         135.502300,
-        'https://example.com/osaka.jpg'
+        '/images/cities/osaka.svg'
     )
 ON CONFLICT (name, country) DO NOTHING;
 

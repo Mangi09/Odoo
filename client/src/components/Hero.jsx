@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { getPlaceImage } from '../lib/images'
 
 export default function Hero() {
   const navigate = useNavigate()
@@ -106,7 +107,7 @@ export default function Hero() {
             <div className="bg-white rounded-[2.5rem] overflow-hidden">
 
               <img
-                src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e"
+                src={getPlaceImage({ name: 'Bali' })}
                 alt=""
                 className="h-64 w-full object-cover"
               />

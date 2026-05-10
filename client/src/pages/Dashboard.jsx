@@ -2,8 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { apiRequest, getActiveUserId, getStoredUser } from '../lib/api'
 import { currencyFormat, formatDate, getTripPhase } from '../lib/format'
-
-const fallbackImage = '/images/cities/jp/tokyo.jpg'
+import { DEFAULT_CITY_IMAGE, getPlaceImage, handleImageError } from '../lib/images'
 
 export default function Dashboard() {
   const navigate = useNavigate()
@@ -178,12 +177,10 @@ function CityCard({ city }) {
   return (
     <article className="bg-white rounded-[2rem] overflow-hidden shadow-sm">
       <img
-        src={city.imageUrl || fallbackImage}
+        src={getPlaceImage(city)}
         alt=""
         className="h-48 w-full object-cover"
-        onError={(event) => {
-          event.currentTarget.src = fallbackImage
-        }}
+        onError={(event) => handleImageError(event, DEFAULT_CITY_IMAGE)}
       />
       <div className="p-6">
         <h3 className="text-2xl font-bold text-[#2D2D2D]">{city.name}</h3>
@@ -200,12 +197,10 @@ function CityMiniCard({ city }) {
   return (
     <article className="flex gap-4 rounded-3xl border border-[#EEE] p-4">
       <img
-        src={city.imageUrl || fallbackImage}
+        src={getPlaceImage(city)}
         alt=""
         className="w-20 h-20 rounded-2xl object-cover"
-        onError={(event) => {
-          event.currentTarget.src = fallbackImage
-        }}
+        onError={(event) => handleImageError(event, DEFAULT_CITY_IMAGE)}
       />
       <div>
         <h3 className="font-bold text-[#2D2D2D]">{city.name}</h3>

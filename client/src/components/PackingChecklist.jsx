@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { X } from "lucide-react";
-import jsPDF from "jspdf";
 
 const initialChecklist = [
     {
@@ -144,49 +143,32 @@ export default function PackingChecklist() {
         setChecklist(updatedChecklist);
     };
 
-    // DOWNLOAD PDF
+    // DOWNLOAD CHECKLIST
 
-    const downloadPDF = () => {
+    const downloadChecklist = () => {
 
-        const doc = new jsPDF();
-
-        let y = 20;
-
-        doc.setFontSize(22);
-
-        doc.text(
-            "Travel Packing Checklist",
-            20,
-            y
-        );
-
-        y += 20;
+        const lines = ["Travel Packing Checklist", ""];
 
         checklist.forEach((category) => {
 
-            doc.setFontSize(16);
-
-            doc.text(category.category, 20, y);
-
-            y += 10;
+            lines.push(category.category);
 
             category.items.forEach((item) => {
 
-                doc.setFontSize(12);
-
-                doc.text(
-                    `${item.checked ? "[x]" : "[ ]"} ${item.name}`,
-                    30,
-                    y
-                );
-
-                y += 8;
+                lines.push(`${item.checked ? "[x]" : "[ ]"} ${item.name}`);
             });
 
-            y += 10;
+            lines.push("");
         });
 
-        doc.save("packing-checklist.pdf");
+        const blob = new Blob([lines.join("\n")], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+        const anchor = document.createElement("a");
+
+        anchor.href = url;
+        anchor.download = "packing-checklist.txt";
+        anchor.click();
+        URL.revokeObjectURL(url);
     };
 
     // COUNTS
@@ -473,11 +455,11 @@ export default function PackingChecklist() {
                         </button>
 
                         <button
-                            onClick={downloadPDF}
+                            onClick={downloadChecklist}
                             className="bg-[#F97316] text-white px-6 py-4 rounded-2xl hover:scale-105 transition"
                         >
 
-                            Download PDF
+                            Download Checklist
 
                         </button>
 

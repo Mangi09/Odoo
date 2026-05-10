@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { apiRequest, getActiveUserId } from '../lib/api'
-
-const fallbackImage = '/images/cities/jp/tokyo.jpg'
+import { DEFAULT_CITY_IMAGE, getPlaceImage, handleImageError } from '../lib/images'
 
 export default function CreateTripPage() {
   const navigate = useNavigate()
@@ -217,12 +216,10 @@ export default function CreateTripPage() {
           <aside className="bg-white p-8 rounded-[2rem] shadow-sm">
             <h2 className="text-2xl font-bold text-[#2D2D2D]">Trip Preview</h2>
             <img
-              src={selectedCity?.imageUrl || fallbackImage}
+              src={getPlaceImage(selectedCity)}
               alt=""
               className="w-full h-56 object-cover rounded-3xl mt-8"
-              onError={(event) => {
-                event.currentTarget.src = fallbackImage
-              }}
+              onError={(event) => handleImageError(event, DEFAULT_CITY_IMAGE)}
             />
             <h3 className="text-3xl font-bold text-[#2D2D2D] mt-6">
               {form.title || `${selectedCity?.name || 'Your'} Escape`}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { apiRequest, setStoredUser } from '../lib/api'
+import { getPlaceImage } from '../lib/images'
 
 const Register = () => {
   const navigate = useNavigate()
@@ -233,7 +234,7 @@ const Register = () => {
       {/* RIGHT - IMAGE */}
       <div className="hidden h-full lg:block overflow-hidden">
         <img
-          src="https://images.unsplash.com/photo-1488646953014-85cb44e25828"
+          src={getPlaceImage({ country: 'Japan' })}
           alt="Travel"
           className="w-full h-full object-cover"
         />

@@ -11,6 +11,11 @@ CREATE TABLE IF NOT EXISTS users (
     email CITEXT NOT NULL UNIQUE,
     password_hash TEXT NOT NULL,
     avatar_url TEXT,
+    username VARCHAR(80),
+    phone_number VARCHAR(40),
+    city VARCHAR(120),
+    country VARCHAR(120),
+    additional_info TEXT,
     language_code VARCHAR(10) NOT NULL DEFAULT 'en',
     role VARCHAR(20) NOT NULL DEFAULT 'traveler'
         CHECK (role IN ('traveler', 'admin')),
@@ -132,6 +137,26 @@ CREATE TABLE IF NOT EXISTS trip_activities (
         CHECK (end_time IS NULL OR start_time IS NULL OR end_time > start_time)
 );
 
+CREATE TABLE IF NOT EXISTS trip_sections (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    trip_id UUID NOT NULL REFERENCES trips(id) ON DELETE CASCADE,
+    section_type VARCHAR(30) NOT NULL DEFAULT 'activity'
+        CHECK (section_type IN ('travel', 'hotel', 'activity', 'note', 'other')),
+    title VARCHAR(160) NOT NULL,
+    description TEXT,
+    start_date DATE,
+    end_date DATE,
+    budget_amount NUMERIC(12, 2) NOT NULL DEFAULT 0
+        CHECK (budget_amount >= 0),
+    currency CHAR(3) NOT NULL DEFAULT 'USD',
+    section_order INTEGER NOT NULL DEFAULT 1 CHECK (section_order > 0),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    CONSTRAINT ck_trip_sections_date_range
+        CHECK (end_date IS NULL OR start_date IS NULL OR end_date >= start_date),
+    CONSTRAINT uq_trip_sections_order UNIQUE (trip_id, section_order)
+);
+
 CREATE TABLE IF NOT EXISTS trip_expenses (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     trip_id UUID NOT NULL REFERENCES trips(id) ON DELETE CASCADE,
@@ -205,6 +230,7 @@ CREATE INDEX IF NOT EXISTS idx_trips_owner_dates ON trips(owner_id, start_date, 
 CREATE INDEX IF NOT EXISTS idx_trips_visibility ON trips(visibility);
 CREATE INDEX IF NOT EXISTS idx_trip_stops_trip_order ON trip_stops(trip_id, stop_order);
 CREATE INDEX IF NOT EXISTS idx_trip_activities_stop_date ON trip_activities(stop_id, scheduled_date, start_time);
+CREATE INDEX IF NOT EXISTS idx_trip_sections_trip_order ON trip_sections(trip_id, section_order);
 CREATE INDEX IF NOT EXISTS idx_trip_expenses_trip_category ON trip_expenses(trip_id, category);
 CREATE INDEX IF NOT EXISTS idx_packing_items_trip ON packing_items(trip_id, is_packed);
 CREATE INDEX IF NOT EXISTS idx_trip_notes_trip_date ON trip_notes(trip_id, note_date);
@@ -245,6 +271,11 @@ FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 DROP TRIGGER IF EXISTS trg_trip_activities_updated_at ON trip_activities;
 CREATE TRIGGER trg_trip_activities_updated_at
 BEFORE UPDATE ON trip_activities
+FOR EACH ROW EXECUTE FUNCTION set_updated_at();
+
+DROP TRIGGER IF EXISTS trg_trip_sections_updated_at ON trip_sections;
+CREATE TRIGGER trg_trip_sections_updated_at
+BEFORE UPDATE ON trip_sections
 FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 
 DROP TRIGGER IF EXISTS trg_trip_expenses_updated_at ON trip_expenses;

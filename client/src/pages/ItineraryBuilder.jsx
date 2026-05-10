@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import heroImg from '../assets/hero.png'
 import { apiRequest, DEMO_TRIP_ID } from '../lib/api'
 import { currencyFormat, formatDate } from '../lib/format'
+import { DEFAULT_CITY_IMAGE, getTripImage, handleImageError } from '../lib/images'
 
 const emptySection = {
   sectionType: 'activity',
@@ -213,7 +213,7 @@ export default function ItineraryBuilder() {
           <aside className="bg-white rounded-[2rem] p-6 shadow-sm h-fit">
             <p className="text-primary font-semibold">Trip Preview</p>
             <h2 className="text-3xl font-bold text-[#2D2D2D] mt-3">{trip?.title || 'Japan Spring Trip'}</h2>
-            <img src={trip?.coverPhotoUrl || '/images/cities/jp/tokyo.jpg'} alt="" onError={(event) => { event.currentTarget.src = heroImg }} className="w-full h-52 object-cover rounded-3xl mt-6" />
+            <img src={getTripImage(trip)} alt="" onError={(event) => handleImageError(event, DEFAULT_CITY_IMAGE)} className="w-full h-52 object-cover rounded-3xl mt-6" />
             <div className="mt-6 space-y-4 text-[#555] font-semibold">
               <p>Total Sections: {sections.length}</p>
               <p>Planned Budget: {currencyFormat(totalBudget)}</p>
