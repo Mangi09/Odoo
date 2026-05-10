@@ -1,16 +1,17 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+import Navbar from "./components/Navbar";
+import Hero from "./components/Hero";
+import Features from "./components/Features";
+import CTA from "./components/CTA";
+import Footer from "./components/Footer";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
   return (
-    <>
-      <h1>Traveloop</h1>
-    </>
-  )
+    <div className="bg-[#F5F3F2] overflow-x-hidden">
+      <Navbar />
+      <Hero />
+      <Features />
+      <CTA />
+      <Footer />
+    </div>
+  );
 }
-
-export default App
