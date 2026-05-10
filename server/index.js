@@ -1,26 +1,23 @@
-const express = require('express');
+const { loadEnvFile } = require('./src/config/env');
 
+loadEnvFile();
 
-const app = express();
+const { createApp } = require('./src/app');
+const { pool } = require('./src/db/pool');
 
-// Middleware
-app.use(express.json());
+const PORT = process.env.PORT || 5000;
+const app = createApp();
 
-// Test Route
-app.get('/', (req, res) => {
-  res.send('Server is running successfully');
+const server = app.listen(PORT, () => {
+  console.log(`Traveloop API running on http://localhost:${PORT}`);
 });
 
-// Example API Route
-app.get('/api', (req, res) => {
-  res.json({ message: 'API working successfully' });
-});
+const shutdown = async () => {
+  server.close(async () => {
+    await pool.end();
+    process.exit(0);
+  });
+};
 
-
-// Port
-const PORT = 5000;
-
-// Start Server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+process.on('SIGINT', shutdown);
+process.on('SIGTERM', shutdown);
