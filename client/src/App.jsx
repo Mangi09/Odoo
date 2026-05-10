@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import { Route, Routes } from 'react-router-dom'
@@ -9,16 +10,68 @@ import CreateTripPage from './pages/CreateTripPage';
 import Profile from './pages/Profile';
 import MyTrips from './pages/MyTrips';
 import ItineraryBuilder from './pages/ItineraryBuilder';
+=======
+// import Navbar from "./components/Navbar";
+// import Hero from "./components/Hero";
+// import Features from "./components/Features";
+// import ActivitySearch from "./components/ActivitySearch";
+// import BudgetItinerary from "./components/BudgetItenrary";
+import PackingChecklist from "./components/PackingChecklist";
+// import CTA from "./components/CTA";
+// import Footer from "./components/Footer";
+// import CreateTrip from "./components/CreateTrip";
+>>>>>>> a2b4a2a313968342998725a8ca64d4ad408c6d94
 
-import Register from "./pages/Register";
-import Login from "./pages/Login";
-import Home from "./pages/Home";
+// export default function App() {
+//   return (
+//     <div className="bg-[#F5F3F2] overflow-x-hidden">
+//       <Navbar />
+//       <Hero />
+//       <Features />
+//       <CreateTrip />
+//       <ActivitySearch />
+//       <BudgetItinerary />
+//       <CTA />
+//       <Footer />
+//     </div>
+//   );
+// }
 
-import MainLayout from "./layouts/MainLayout";
-import AdminLayout from "./layouts/AdminLayout";
+// Testing Files
 
-function App() {
+// import CreateTrip from "./components/CreateTrip";
+
+// export default function App() {
+//   return (
+//     <div className="bg-[#F5F3F2] min-h-screen">
+//       <CreateTrip />
+//     </div>
+//   );
+// }
+
+// import ActivitySearch from "./components/ActivitySearch";
+
+// export default function App() {
+//   return (
+//     <div className="bg-[#F5F3F2] min-h-screen">
+//       <ActivitySearch />
+//     </div>
+//   );
+// }
+
+// import BudgetItinerary from "./components/BudgetItinerary";
+
+// export default function App() {
+//   return (
+//     <div className="bg-[#F5F3F2] min-h-screen">
+//       <BudgetItinerary />
+//     </div>
+//   );
+// }
+
+export default function App() {
   return (
+<<<<<<< HEAD
 <<<<<<< HEAD
     <Routes>
 
@@ -55,3 +108,10 @@ function App() {
 }
 
 export default App;
+=======
+    <div className="bg-[#F5F3F2] overflow-x-hidden min-h-screen">
+      <PackingChecklist />
+    </div>
+  );
+}
+>>>>>>> a2b4a2a313968342998725a8ca64d4ad408c6d94
