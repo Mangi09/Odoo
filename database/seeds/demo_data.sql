@@ -1,6 +1,6 @@
 -- Demo data for Traveloop
--- Run after 001_init.sql:
--- psql -U postgres -d traveloop -f database/seeds/001_demo_data.sql
+-- Run after schema_structure.sql:
+-- psql -U postgres -d traveloop -f database/seeds/demo_data.sql
 
 INSERT INTO users (id, full_name, email, password_hash, role)
 VALUES
@@ -8,17 +8,21 @@ VALUES
         '00000000-0000-0000-0000-000000000001',
         'Aarav Sharma',
         'aarav@example.com',
-        'replace-with-real-bcrypt-hash',
+        'scrypt$35d931faf0736f389bc983d9cd270042$b05258a733a30caf4e8be996e620510c8af3badf9374f287b7a2a6b6f4ab63f91ae891df948628c1f0b4de6ab8edb32a754bf32c92079a4fe6c7a7f4d4908298',
         'traveler'
     ),
     (
         '00000000-0000-0000-0000-000000000002',
         'Admin User',
         'admin@example.com',
-        'replace-with-real-bcrypt-hash',
+        'scrypt$9f6458e65c50896eb089d2077e54432e$a0bfd7aec444f682f7a81078168c815a36679277fee28c4e00ab98fb322b725dc4b04fefbb45d11517af0576b49dc572646d725dc4a931e40b6410e4c5422d9a',
         'admin'
     )
-ON CONFLICT (email) DO NOTHING;
+ON CONFLICT (email) DO UPDATE
+SET
+    full_name = EXCLUDED.full_name,
+    password_hash = EXCLUDED.password_hash,
+    role = EXCLUDED.role;
 
 INSERT INTO cities (
     id,
