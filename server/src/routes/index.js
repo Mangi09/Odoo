@@ -9,6 +9,8 @@ const recommendationRoutes = require('./recommendations.routes');
 const publicRoutes = require('./public.routes');
 const analyticsRoutes = require('./analytics.routes');
 const adminRoutes = require('./admin.routes');
+const activitiesRoutes = require('./activities.routes');
+const communityRoutes = require('./community.routes');
 
 const router = express.Router();
 
@@ -29,5 +31,7 @@ router.use('/trips', tripRoutes);
 router.use('/public', publicRoutes);
 router.use('/analytics', analyticsRoutes);
 router.use('/admin', adminRoutes);
+router.use('/activities', activitiesRoutes);
+router.use('/community', communityRoutes);
 
 module.exports = router;
