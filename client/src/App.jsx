@@ -17,3 +17,13 @@ export default function App() {
     </div>
   );
 }
+
+// import CreateTrip from "./components/CreateTrip";
+
+// export default function App() {
+//   return (
+//     <div className="bg-[#F5F3F2] min-h-screen">
+//       <CreateTrip />
+//     </div>
+//   );
+// }
