@@ -3,6 +3,7 @@ import Hero from "./components/Hero";
 import Features from "./components/Features";
 import CTA from "./components/CTA";
 import Footer from "./components/Footer";
+import CreateTrip from "./components/CreateTrip";
 
 export default function App() {
   return (
@@ -10,6 +11,7 @@ export default function App() {
       <Navbar />
       <Hero />
       <Features />
+      <CreateTrip />
       <CTA />
       <Footer />
     </div>
