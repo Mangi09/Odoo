@@ -8,6 +8,7 @@ import MainLayout from "./layouts/MainLayout";
 import AdminLayout from "./layouts/AdminLayout";
 import AdminPanel from "./pages/AdminPanel";
 import Tips from "./pages/Tips";
+import Community from "./pages/Community";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path='/tips' element={<Tips />} />
+        <Route path='/community' element={<Community />} />
       </Route>
 
       {/* Admin Layout */}
